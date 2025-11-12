@@ -1,6 +1,7 @@
 package models
 
 type Links struct {
-	Links_arr map[string]int
-	Status    string
+	ID     int    `json:"links_num"`
+	URL    string `json:"url"` // "url":"status"
+	Status string `json:"status'`
 }
