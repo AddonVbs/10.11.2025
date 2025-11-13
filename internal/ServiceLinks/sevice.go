@@ -88,6 +88,6 @@ func (s *LinksServer) GetStatusLinksServiceById(id int) (models.Links, error) {
 			return links[i], nil
 		}
 	}
-	return models.Links{}, fmt.Errorf("link with ID %b not found", id)
+	return models.Links{}, fmt.Errorf("link with ID %d not found", id)
 
 }

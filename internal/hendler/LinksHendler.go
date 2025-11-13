@@ -2,7 +2,11 @@ package hendler
 
 import (
 	"modul/internal/ServiceLinks"
+	"modul/internal/models"
 	"net/http"
+	"strconv"
+
+	"github.com/labstack/echo/v4"
 )
 
 type ServiceLinskHendler struct {
@@ -13,10 +17,30 @@ func NewLinksServiHendler(s ServiceLinks.LinksServiceInterface) *ServiceLinskHen
 	return &ServiceLinskHendler{service: s}
 }
 
-func (h *ServiceLinskHendler) GetLinkByID(w http.ResponseWriter, r *http.Request) {
-	panic("ff")
+func (h *ServiceLinskHendler) GetLinkByID(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
+	}
+
+	links, err := h.service.GetStatusLinksServiceById(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, links)
 }
 
-func (h *ServiceLinskHendler) GetLink(w http.ResponseWriter, r *http.Request) {
-	panic("ff")
+func (h *ServiceLinskHendler) GetLink(c echo.Context) error {
+	var input models.Links
+
+	if err := c.Bind(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request body"})
+	}
+
+	links, err := h.service.GetStatusLinksService(input)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, links)
 }
