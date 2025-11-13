@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type LinksService interface {
+type LinksServiceInterface interface {
 	GetSaveLinskService() ([]models.Links, error)
 	GetStatusLinksService(models.Links) ([]models.Links, error)
 	GetStatusLinksServiceById(id int) (models.Links, error)
@@ -88,6 +88,6 @@ func (s *LinksServer) GetStatusLinksServiceById(id int) (models.Links, error) {
 			return links[i], nil
 		}
 	}
-	return models.Links{}, fmt.Errorf("link with ID %s not found", id)
+	return models.Links{}, fmt.Errorf("link with ID %b not found", id)
 
 }
